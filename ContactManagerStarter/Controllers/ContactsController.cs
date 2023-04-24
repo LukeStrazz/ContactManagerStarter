@@ -92,7 +92,7 @@ namespace ContactManager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveContact([FromBody]SaveContactViewModel model)
+        public async Task<IActionResult> SaveContact([FromBody] SaveContactViewModel model)
         {
             var contact = model.ContactId == Guid.Empty
                 ? new Contact { Title = model.Title, FirstName = model.FirstName, LastName = model.LastName, DOB = model.DOB }
@@ -103,9 +103,21 @@ namespace ContactManager.Controllers
                 return NotFound();
             }
 
+            // Add the warning message if an email is not completed
+            if (!string.IsNullOrEmpty(model.Emails?.FirstOrDefault()?.Email) && !contact.EmailAddresses.Any(e => e.Email == model.Emails.FirstOrDefault()?.Email))
+            {
+                ModelState.AddModelError("Emails", "The email you typed was not added to the list. Please add it to the list before saving the contact.");
+                return BadRequest(ModelState);
+            }
+
+            if (!string.IsNullOrEmpty(model.Addresses?.FirstOrDefault()?.Street1) && !contact.Addresses.Any(a => a.Street1 == model.Addresses.FirstOrDefault()?.Street1))
+            {
+                ModelState.AddModelError("Addresses", "The mailing address you typed was not added to the list. Please add it to the list before saving the contact.");
+                return BadRequest(ModelState);
+            }
+
             _context.EmailAddresses.RemoveRange(contact.EmailAddresses);
             _context.Addresses.RemoveRange(contact.Addresses);
-
 
             foreach (var email in model.Emails)
             {
@@ -144,7 +156,6 @@ namespace ContactManager.Controllers
                 _context.Contacts.Update(contact);
             }
 
-
             await _context.SaveChangesAsync();
             await _hubContext.Clients.All.SendAsync("Update");
 
@@ -152,6 +163,7 @@ namespace ContactManager.Controllers
 
             return Ok();
         }
+
 
         private void SendEmailNotification(Guid contactId)
         {
