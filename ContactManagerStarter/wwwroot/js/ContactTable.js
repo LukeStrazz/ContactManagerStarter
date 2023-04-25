@@ -1,10 +1,43 @@
 ﻿"use strict";
 
 $(function () {
+    console.log("Page loaded");
     loadContactTable();
     initSignalr();
 
+    let emailClickedIn = false;
+    let addedYet = false;
+    let emailEdited = false;
+
+    // Step 1: email clicked in
+    $(document).on("click", "#newEmailAddress", function () {
+        console.log("email clicked in");
+        emailClickedIn = true;
+        addedYet = false; // Set AddedYet to false
+        emailEdited = false;
+    });
+
+    // Step 1.5: email input changed
+    $(document).on("input", "#newEmailAddress", function () {
+        emailEdited = true;
+    });
+
+    // Step 2: email clicked out
+    $(document).on("blur", "#newEmailAddress", function () {
+        console.log("email clicked out");
+        emailClickedIn = false;
+
+        if (emailEdited == true) {
+            console.log("email address was edited");
+        } else {
+            console.log("email address was not edited");
+        }
+    });
+
+
+
     $(document).on("dblclick", ".editContact", function () {
+        console.log("edit");
         let buttonClicked = $(this);
         let id = buttonClicked.data("id");
         $.ajax({
@@ -31,6 +64,7 @@ $(function () {
     });
 
     $(document).on("click", "#addNewEmail", function () {
+        console.log("add button clicked");
         let emailAddress = $('#newEmailAddress').val();
         let emailAddressType = $('#newEmailAddressType').val();
         let emailTypeClass;
@@ -47,7 +81,17 @@ $(function () {
             '<span class="badge ' + emailTypeClass + ' m-l-10">' + emailAddressType + '</span>' +
             '<span class="m-l-20">' + emailAddress + ' </span>' +
             '<a class="redText pointer float-right removeEmail" title="Delete Email">X</a>' +
-            '</li>');
+                      '</li>');
+            // Step 3: button ADD clicked
+            console.log("button ADD clicked");
+            emailEdited = true;
+            if (emailClickedIn) {
+                addedYet = true; // Set AddedYet to true
+            }
+            // Step 4: Conditionally render error message
+            if (!addedYet) {
+                console.error("Error: client was not added.");
+            }
             $('#newEmailAddress').val("");  
             $('#newEmailAddress').removeClass("invalidInput");
             $('#invalidEmailFeedback').hide();
@@ -58,6 +102,7 @@ $(function () {
     });
 
     $(document).on("click", "#addNewAddress", function () {
+        console.log("address add clicked");
         let street1 = $('#newAddressStreet1').val();
         let street2 = $('#newAddressStreet2').val();
         let city = $('#newAddressCity').val();
