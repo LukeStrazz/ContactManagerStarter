@@ -202,18 +202,7 @@ $(function () {
     });
 
     $(document).on("click", "#saveContactButton", function () {
-        // Get the ID of the selected primary email address
-        var primaryEmailId = $("input.primaryEmailRadio:checked").data("id");
-
-        // Set the IsPrimary flag for the corresponding email address in the model
-        for (var i = 0; i < Model.EmailAddresses.length; i++) {
-            var emailAddress = Model.EmailAddresses[i];
-            if (emailAddress.Id == primaryEmailId) {
-                emailAddress.IsPrimary = true;
-            } else {
-                emailAddress.IsPrimary = false;
-            }
-        }
+        
         function getEmailAddresses() {
             return $(".emailListItem").map(function () {
                 return {
@@ -250,6 +239,14 @@ $(function () {
                 $('#editContactLastName').addClass("invalidInput");
                 $('#invalidLastNameFeedback').show();
                 isValid = false;
+            }
+            if ("#newEmailAddress" == "") {
+                $('#notSavedEmailFeedback').hide();
+                isValid = true;
+            }
+            if ("#newAddressStreet1" == "") {
+                $('#notSavedAddress').hide();
+                isValid = true;
             }
 
             return isValid;
