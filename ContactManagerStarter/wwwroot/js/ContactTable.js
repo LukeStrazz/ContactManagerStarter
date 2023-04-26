@@ -43,9 +43,37 @@ $(function () {
         }
     });
 
-    if (addedYet == true) {
-        $('#notSavedEmailFeedback').hide();
-    }
+    let addressClickedIn = false;
+    let addressAddedYet = false;
+    let addressEdited = false;
+
+    // Step 1: Address type clicked in
+    $(document).on("click", "#newAddressStreet1", function () {
+        console.log("address type clicked in");
+        addressClickedIn = true;
+        addressAddedYet = false; // Set addressAddedYet to false
+        addressEdited = false;
+    });
+
+    // Step 1.5: Address type input changed
+    $(document).on("input", "#newAddressStreet1", function () {
+        addressEdited = true;
+    });
+
+    // Step 2: Address type clicked out
+    $(document).on("blur", "#newAddressStreet1", function () {
+        console.log("address type clicked out");
+        addressClickedIn = false;
+
+        if (addressEdited == true) {
+            console.log("address type was edited");
+            $('#notSavedAddress').show();
+        } else {
+            console.log("address type was not edited");
+            $('#notSavedAddress').hide();
+        }
+    });
+
 
 
     $(document).on("dblclick", ".editContact", function () {
@@ -151,7 +179,8 @@ $(function () {
             $('#newAddressCity').val("");
             $('#newAddressState').val("");
             $('#newAddressZip').val("");
-
+        addressAddedYet = true;
+        $('#notSavedAddress').hide();
             //$('.addressInput').removeClass("invalidInput");
 
             //$('.addressFeedback').hide();
