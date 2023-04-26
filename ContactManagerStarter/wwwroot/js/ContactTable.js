@@ -116,12 +116,14 @@ $(function () {
         }
 
         if (validateEmail(emailAddress)) {
-                  $("#emailList").append(
-            '<li class="list-group-item emailListItem" data-email="' + emailAddress + '" data-type="' + emailAddressType + '">' +
-            '<span class="badge ' + emailTypeClass + ' m-l-10">' + emailAddressType + '</span>' +
-            '<span class="m-l-20">' + emailAddress + ' </span>' +
-            '<a class="redText pointer float-right removeEmail" title="Delete Email">X</a>' +
-                      '</li>');
+            $("#emailList").append(
+                '<li class="list-group-item emailListItem" data-email="' + emailAddress + '" data-type="' + emailAddressType + '">' +
+                '<input type="radio" name="primaryEmail" class="primaryEmailRadio">' + // Add this line
+                '<span class="badge ' + emailTypeClass + ' m-l-10">' + emailAddressType + '</span>' +
+                '<span class="m-l-20">' + emailAddress + ' </span>' +
+                '<a class="redText pointer float-right removeEmail" title="Delete Email">X</a>' +
+                '</li>');
+
             // Step 3: button ADD clicked
             console.log("button ADD clicked");
             emailEdited = true;
@@ -141,6 +143,12 @@ $(function () {
             $('#invalidEmailFeedback').show();
         }
     });
+
+    $(document).on("change", ".primaryEmailRadio", function () {
+        // Uncheck all other radio buttons
+        $(".primaryEmailRadio").not(this).prop("checked", false);
+    });
+
 
     $(document).on("click", "#addNewAddress", function () {
         console.log("address add clicked");

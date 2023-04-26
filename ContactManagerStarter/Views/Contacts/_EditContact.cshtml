@@ -38,30 +38,33 @@
     <div class="row">
         <div class="form-group col-md-12">
             <ul id="emailList" class="list-group">
-                @if (Model.EmailAddresses != null)
+                @if (Model?.EmailAddresses != null)
+                {
+                    foreach (var emailAddress in Model.EmailAddresses)
                     {
-                        foreach (var emailAddress in Model.EmailAddresses)
+                        if (emailAddress != null)
                         {
-                <li class="list-group-item emailListItem" data-email="@emailAddress.Email" data-type="@emailAddress.Type">
-                    @{
-                                    if (emailAddress.Type == EmailType.Personal)
-                                    {
-                        <span class="badge badge-primary m-l-10"> @emailAddress.Type</span>
-                                    }
-                                    else
-                                    {
-                        <span class="badge badge-success m-l-10"> @emailAddress.Type</span>
-                                    }
-                    }
-
-                    <span class="m-l-20">@emailAddress.Email</span>
-                    <a class="redText pointer float-right removeEmail" title="Delete Email">X</a>
-                </li>
+                            <li class="list-group-item emailListItem" data-email="@emailAddress.Email" data-type="@emailAddress.Type">
+                                <input type="radio" name="primaryEmail" class="primaryEmailRadio">
+                                @{
+                                    var emailType = emailAddress.Type?.ToString(); // Get email type as a string
+                                    var badgeClass = emailType == "Personal" ? "badge-primary" : "badge-success"; // Determine badge class based on email type
+                                }
+                                <span class="badge @badgeClass m-l-10"> @emailType</span> <!-- Use emailType variable and badgeClass -->
+                                <span class="m-l-20">@emailAddress.Email</span>
+                                <a class="redText pointer float-right removeEmail" title="Delete Email">X</a>
+                            </li>
                         }
                     }
+                }
             </ul>
         </div>
     </div>
+
+
+
+
+
 
 
     <div class="row">
