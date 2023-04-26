@@ -67,7 +67,8 @@ namespace ContactManager.Data
                     Id = new Guid("5111f412-a7f4-4169-bb27-632687569ccd"),
                     Email = "Bill@gates.com",
                     Type = EmailType.Personal,
-                    ContactId = bill.Id
+                    ContactId = bill.Id,
+                    IsPrimary = true
                 },
 
                 new
@@ -75,7 +76,8 @@ namespace ContactManager.Data
                     Id = new Guid("3ddeb084-5e5d-4eca-b275-e4f6886e04dc"),
                     Email = "Steve@Jobs.com",
                     Type = EmailType.Personal,
-                    ContactId = steve.Id
+                    ContactId = steve.Id,
+                    IsPrimary = false
                 },
 
                 new
@@ -83,7 +85,8 @@ namespace ContactManager.Data
                     Id = new Guid("3a406f64-ad7b-4098-ab01-7e93aae2b851"),
                     Email = "SteveJobs@apple.com",
                     Type = EmailType.Business,
-                    ContactId = steve.Id
+                    ContactId = steve.Id,
+                    IsPrimary = true
                 },
 
                 new
@@ -91,7 +94,8 @@ namespace ContactManager.Data
                     Id = new Guid("d1a50413-20c0-4972-a351-8be24e1fc939"),
                     Email = "SundarPichai@gmail.com",
                     Type = EmailType.Business,
-                    ContactId = sundar.Id
+                    ContactId = sundar.Id,
+                    IsPrimary = true
                 });
 
             modelBuilder.Entity<Address>().HasData(
