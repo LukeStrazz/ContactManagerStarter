@@ -45,7 +45,7 @@
                         if (emailAddress != null)
                         {
                             <li class="list-group-item emailListItem" data-email="@emailAddress.Email" data-type="@emailAddress.Type">
-                                <input type="radio" name="primaryEmail" class="primaryEmailRadio">
+                                <input type="radio" name="primaryEmail" class="primaryEmailRadio" data-id="@emailAddress.Id" checked>
                                 @{
                                     var emailType = emailAddress.Type?.ToString(); // Get email type as a string
                                     var badgeClass = emailType == "Personal" ? "badge-primary" : "badge-success"; // Determine badge class based on email type
@@ -60,12 +60,6 @@
             </ul>
         </div>
     </div>
-
-
-
-
-
-
 
     <div class="row">
         <div class="form-group col-md-6">

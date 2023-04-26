@@ -74,8 +74,6 @@ $(function () {
         }
     });
 
-
-
     $(document).on("dblclick", ".editContact", function () {
         console.log("edit");
         let buttonClicked = $(this);
@@ -204,6 +202,18 @@ $(function () {
     });
 
     $(document).on("click", "#saveContactButton", function () {
+        // Get the ID of the selected primary email address
+        var primaryEmailId = $("input.primaryEmailRadio:checked").data("id");
+
+        // Set the IsPrimary flag for the corresponding email address in the model
+        for (var i = 0; i < Model.EmailAddresses.length; i++) {
+            var emailAddress = Model.EmailAddresses[i];
+            if (emailAddress.Id == primaryEmailId) {
+                emailAddress.IsPrimary = true;
+            } else {
+                emailAddress.IsPrimary = false;
+            }
+        }
         function getEmailAddresses() {
             return $(".emailListItem").map(function () {
                 return {
