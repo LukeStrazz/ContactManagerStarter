@@ -29,11 +29,23 @@ $(function () {
 
         if (emailEdited == true) {
             console.log("email address was edited");
+            $('#notSavedEmailFeedback').show();
         } else {
             console.log("email address was not edited");
+            if ($('#newEmailAddress').val() !== "") {
+                $('#notSavedEmailFeedback').show();
+            } else {
+                $('#notSavedEmailFeedback').hide();
+            }
+            if (addedYet == true) {
+                $('#notSavedEmailFeedback').hide();
+            }
         }
     });
 
+    if (addedYet == true) {
+        $('#notSavedEmailFeedback').hide();
+    }
 
 
     $(document).on("dblclick", ".editContact", function () {
@@ -85,12 +97,13 @@ $(function () {
             // Step 3: button ADD clicked
             console.log("button ADD clicked");
             emailEdited = true;
+            $('#notSavedEmailFeedback').hide();
             if (emailClickedIn) {
                 addedYet = true; // Set AddedYet to true
             }
             // Step 4: Conditionally render error message
             if (!addedYet) {
-                console.error("Error: client was not added.");
+                console.log("Error: client was not saved but email added.");
             }
             $('#newEmailAddress').val("");  
             $('#newEmailAddress').removeClass("invalidInput");
