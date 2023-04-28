@@ -88,12 +88,16 @@ $(function () {
                 $('#EditContactModalContent').html(data);
                 $('#modal-editContact').modal('show');
                 $("#ServerErrorAlert").hide();
+                //
+                let primaryEmailId = $('input.primaryEmailRadio:checked').data("id");
+                $('input.primaryEmailRadio[data-id="' + primaryEmailId + '"]').prop("checked", true);
             },
             error: function () {
                 $("#ServerErrorAlert").show();
             }
         });
     });
+
 
     $(document).on("click", ".deleteContact", function () {
         let buttonClicked = $(this);
@@ -106,6 +110,7 @@ $(function () {
         let emailAddress = $('#newEmailAddress').val();
         let emailAddressType = $('#newEmailAddressType').val();
         let emailTypeClass;
+        let isPrimary = ($('.emailListItem[data-isprimary="true"]').length === 0); // Set new email as primary if there's no primary email yet
 
         if (emailAddressType === "Personal") {
             emailTypeClass = "badge-primary"; //blue badge
@@ -115,8 +120,8 @@ $(function () {
 
         if (validateEmail(emailAddress)) {
             $("#emailList").append(
-                '<li class="list-group-item emailListItem" data-email="' + emailAddress + '" data-type="' + emailAddressType + '">' +
-                '<input type="radio" name="primaryEmail" class="primaryEmailRadio">' + // Add this line
+                '<li class="list-group-item emailListItem" data-email="' + emailAddress + '" data-type="' + emailAddressType + '" data-isprimary="' + isPrimary + '">' +
+                '<input type="radio" name="primaryEmail" class="primaryEmailRadio"' + (isPrimary ? ' checked' : '') + '>' +
                 '<span class="badge ' + emailTypeClass + ' m-l-10">' + emailAddressType + '</span>' +
                 '<span class="m-l-20">' + emailAddress + ' </span>' +
                 '<a class="redText pointer float-right removeEmail" title="Delete Email">X</a>' +
@@ -204,13 +209,14 @@ $(function () {
     $(document).on("click", "#saveContactButton", function () {
         
         function getEmailAddresses() {
-            return $(".emailListItem").map(function () {
-                return {
-                    Email: $(this).data("email"),
-                    Type: $(this).data("type")
-                }
-            }).get();
-        }
+        return $(".emailListItem").map(function () {
+            return {
+                Email: $(this).data("email"),
+                Type: $(this).data("type"),
+                IsPrimary: $(this).find('.primaryEmailRadio').is(':checked')
+            }
+        }).get();
+    }
 
         function getAddresses() {
             return $(".addressListItem").map(function () {

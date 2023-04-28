@@ -10,5 +10,6 @@ namespace ContactManager.Models
     {
         public EmailType Type { get; set; }
         public string Email { get; set; }
+        public bool IsPrimary { get; set; }
     }
 }

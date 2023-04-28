@@ -94,6 +94,9 @@ namespace ContactManager.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveContact([FromBody]SaveContactViewModel model)
         {
+
+            System.Console.WriteLine(model);
+
             var contact = model.ContactId == Guid.Empty
                 ? new Contact { Title = model.Title, FirstName = model.FirstName, LastName = model.LastName, DOB = model.DOB }
                 : await _context.Contacts.Include(x => x.EmailAddresses).Include(x => x.Addresses).FirstOrDefaultAsync(x => x.Id == model.ContactId);
@@ -113,7 +116,8 @@ namespace ContactManager.Controllers
                 {
                     Type = email.Type,
                     Email = email.Email,
-                    Contact = contact
+                    Contact = contact,
+                    IsPrimary = email.IsPrimary
                 });
             }
 
@@ -148,7 +152,7 @@ namespace ContactManager.Controllers
             await _context.SaveChangesAsync();
             await _hubContext.Clients.All.SendAsync("Update");
 
-            SendEmailNotification(contact.Id);
+           // SendEmailNotification(contact.Id);
 
             return Ok();
         }
