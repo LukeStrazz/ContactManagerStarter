@@ -36,6 +36,18 @@ button.accept-policy {
     line-height: inherit;
 }
 
+.button-pink {
+    background-color: pink;
+    border-radius: 3px;
+    border: 2px solid #E6E6FA;
+}
+
+.button-lavender {
+    background-color: #E6E6FA;
+    border-radius: 3px;
+    border: 2px solid pink;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

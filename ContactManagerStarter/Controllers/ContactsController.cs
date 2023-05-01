@@ -95,7 +95,7 @@ namespace ContactManager.Controllers
         public async Task<IActionResult> SaveContact([FromBody]SaveContactViewModel model)
         {
 
-            System.Console.WriteLine(model);
+            //System.Console.WriteLine(model);
 
             var contact = model.ContactId == Guid.Empty
                 ? new Contact { Title = model.Title, FirstName = model.FirstName, LastName = model.LastName, DOB = model.DOB }
